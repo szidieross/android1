@@ -3,6 +3,7 @@ package com.example.android_hf1;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,7 +13,7 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText n1, n2;
     private Button plus, minus, multiply, divide;
-    private TextView result;
+    private TextView resultText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         minus = findViewById(R.id.minus);
         multiply = findViewById(R.id.multiply);
         divide = findViewById(R.id.divide);
-        result = findViewById(R.id.result);
+        resultText = findViewById(R.id.result);
 
         plus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,9 +59,36 @@ public class MainActivity extends AppCompatActivity {
 
     private void szamol(char muvelet) {
         try {
+            double num1 = Double.parseDouble(n1.getText().toString());
+            double num2 = Double.parseDouble(n2.getText().toString());
 
+            Log.d("szam","n1: "+num1);
+            Log.d("szam","n2: "+num2);
+
+            double eredmeny = 0;
+
+            switch (muvelet) {
+                case '+':
+                    eredmeny = num1 + num2;
+                    break;
+                case '-':
+                    eredmeny = num1 - num2;
+                    break;
+                case '*':
+                    eredmeny = num1 * num2;
+                    break;
+                case '/':
+                    if (num2 != 0) {
+                        eredmeny = num1 / num2;
+                    } else {
+                        resultText.setText("CAnnot divide by zero");
+                    }
+                    break;
+            }
+
+            resultText.setText("= " + eredmeny);
         } catch (NumberFormatException e) {
-            result.setText("Invalid number format");
+            resultText.setText("Invalid number format");
         }
     }
 }
